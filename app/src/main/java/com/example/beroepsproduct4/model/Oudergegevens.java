@@ -1,9 +1,17 @@
 package com.example.beroepsproduct4.model;
 
 public class Oudergegevens {
-    public String oudernaam;
-    public String bsn;
-    public Zorgcentrum zorgcentrum;
+    private String oudernaam;
+    private String bsn;
+    private Zorgcentrum zorgcentrum;
+
+    public Oudergegevens(String bsn) {
+        this.bsn = bsn;
+    }
+
+    public Oudergegevens() {
+
+    }
 
     public String getOudernaam() {
         return oudernaam;

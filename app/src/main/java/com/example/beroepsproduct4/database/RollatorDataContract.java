@@ -14,5 +14,15 @@ public class RollatorDataContract {
 
     }
 
+    public static class Ouderengegevens implements BaseColumns{
+        public static final String TABLE_NAME = "ouderengegevens";
+        public  static final String Column_Name_Bsn = "bsn";
+        public static final String Column_Name_Oudernaam = "oudernaam";
+        public static final String Column_NAME_Afdeling = "afdeling";
+        public static final String Column_NAME_Zorgcentrum = "zorgcentrum";
+
+
+    }
+
 
 }

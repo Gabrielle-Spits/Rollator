@@ -1,12 +1,13 @@
 package com.example.beroepsproduct4.schermen.wooncentrum;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class WooncentrumListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_wooncentrum_list, container, false);
-        ListView lvBsn = v.findViewById(R.id.lvZorgcentrum);
+        ListView lvZorgcentrum = v.findViewById(R.id.lvZorgcentrum);
         DataDBHelper dbHelper = new DataDBHelper(v.getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "select afdeling,zorgcentrum from zorgcentrums";
@@ -51,16 +52,16 @@ public class WooncentrumListFragment extends Fragment {
             db.close();
         }
         ArrayAdapter<Zorgcentrum> zorgcentrumArrayAdapter = new ZorcentrumArrayAdapter(v.getContext(), R.layout.zorgcentrum_list_adapter, alZorgcentrums);
-        lvBsn.setAdapter(zorgcentrumArrayAdapter);
-//        lvBsn.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-//                Beheerder f = (Beheerder) parent.getItemAtPosition(i);
-//                FragmentManager fragmentManager = getParentFragmentManager();
-//                Fragment fragment = fragmentManager.findFragmentById(R.id.InsertBeperking);
-//                ((InsertBeperkingFragment)fragment).fillInfo(f);
-//            }
-//        });
+        lvZorgcentrum.setAdapter(zorgcentrumArrayAdapter);
+        lvZorgcentrum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Zorgcentrum zorgcentrum = (Zorgcentrum) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(view.getContext(), DetailZorgcentrumActivity.class);
+                intent.putExtra("zorgcentrum", zorgcentrum);
+                startActivity(intent);
+            }
+        });
         return v;
 
 
