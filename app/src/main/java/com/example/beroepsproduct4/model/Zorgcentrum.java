@@ -64,9 +64,6 @@ public class Zorgcentrum implements Parcelable  {
 
     @Override
     public String toString() {
-        return "Zorgcentrum{" +
-                "afdeling='" + afdeling + '\'' +
-                ", zorgcentrum='" + zorgcentrum + '\'' +
-                '}';
+        return afdeling + " "+ zorgcentrum;
     }
 }

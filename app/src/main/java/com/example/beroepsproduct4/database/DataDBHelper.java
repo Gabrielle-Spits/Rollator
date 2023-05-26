@@ -2,13 +2,17 @@ package com.example.beroepsproduct4.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
 
+import com.example.beroepsproduct4.model.Oudergegevens;
 import com.example.beroepsproduct4.model.Zorgcentrum;
+
+import java.util.ArrayList;
 
 
 public class DataDBHelper extends SQLiteOpenHelper {
@@ -79,6 +83,23 @@ public class DataDBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public long insertOudergegevens(Oudergegevens oudergegevens) {
+        long result = 0;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(RollatorDataContract.Ouderengegevens.Column_Name_Bsn, oudergegevens.getBsn());
+            values.put(RollatorDataContract.Ouderengegevens.Column_Name_Oudernaam, oudergegevens.getOudernaam());
+            values.put(RollatorDataContract.Ouderengegevens.Column_NAME_Afdeling,oudergegevens.getZorgcentrum().getAfdeling());
+            values.put(RollatorDataContract.Ouderengegevens.Column_NAME_Zorgcentrum,oudergegevens.getZorgcentrum().getZorgcentrum());
+            result = db.insert(RollatorDataContract.Ouderengegevens.TABLE_NAME, null, values);
+            System.out.println(result);
+        }catch (SQLException sqlex) {
+            sqlex.getMessage();
+        }
+        return result;
+    }
+
     public long deleteZorgcentrum(Zorgcentrum zorgcentrum) {
         long result = 0;
         try {
@@ -91,6 +112,55 @@ public class DataDBHelper extends SQLiteOpenHelper {
 
         }
         return result;
+    }
+
+    public ArrayList<Zorgcentrum> SpinnerZorgcentrum() {
+        ArrayList<Zorgcentrum> zorgcentrums = new ArrayList();
+        String sql = "select afdeling,zorgcentrum from zorgcentrums";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur_zorgcentrum = db.rawQuery(sql, null);
+
+        if (cur_zorgcentrum.moveToFirst()) {
+            do{
+                Zorgcentrum zorgcentrum = new Zorgcentrum();
+                zorgcentrum.setAfdeling(cur_zorgcentrum.getString(0));
+                zorgcentrum.setZorgcentrum(cur_zorgcentrum.getString(1));
+                zorgcentrums.add(zorgcentrum);
+            } while (cur_zorgcentrum.moveToNext());
+        }
+            return zorgcentrums;
+    }
+
+
+    public long deleteOudergegevens(Oudergegevens oudergegevensdelete) {
+        long result = 0;
+        try {
+            String strBsn = oudergegevensdelete.getBsn();
+            SQLiteDatabase db = this.getReadableDatabase();
+            result = db.delete(RollatorDataContract.Ouderengegevens.TABLE_NAME,"bsn=?", new String[]{strBsn});
+
+        }catch (SQLException se){
+
+        }
+        return result;
+    }
+
+    public long updateOudergegevens(Oudergegevens oudergegevens) {
+        long result = 0;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(RollatorDataContract.Ouderengegevens.Column_Name_Oudernaam,oudergegevens.getOudernaam());
+            values.put(RollatorDataContract.Ouderengegevens.Column_NAME_Afdeling,oudergegevens.getZorgcentrum().getAfdeling());
+            values.put(RollatorDataContract.Ouderengegevens.Column_NAME_Zorgcentrum,oudergegevens.getZorgcentrum().getZorgcentrum());
+            result = db.update(RollatorDataContract.Ouderengegevens.TABLE_NAME,values,"bsn =?",new String[]{oudergegevens.getBsn()});
+            System.out.println(result);
+            System.out.println(values);
+        }catch (SQLException se){
+            se.getMessage();
+        }
+        return result;
+
     }
 }
 

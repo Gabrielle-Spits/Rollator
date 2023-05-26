@@ -12,7 +12,13 @@
         android:theme="@style/Theme.Beroepsproduct4"
         tools:targetApi="31">
         <activity
-            android:name=".Schermen_oudergegevens.OverzichtClientenactivity"
+            android:name=".schermen.oudergegevens.DetailOudergegevensActivity"
+            android:exported="false" />
+        <activity
+            android:name=".schermen.oudergegevens.OudertoevoegenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".schermen.oudergegevens.OverzichtClientenactivity"
             android:exported="false" />
         <activity
             android:name=".schermen.wooncentrum.DetailZorgcentrumActivity"

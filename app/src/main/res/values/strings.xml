@@ -10,4 +10,9 @@
     <string name="afdeling1">Afdeling:</string>
     <string name="zorgcentrum2">Zorgcentrum:</string>
     <string name="bewerk">Bewerk</string>
+    <string name="Kiesouder">kies client</string>
+    <string name="voeg_client_toe">Voeg client toe</string>
+    <string name="bsn">BSN:</string>
+    <string name="oudernaam">Oudernaam:</string>
+    <string name="Bsn">BSN:</string>
 </resources>

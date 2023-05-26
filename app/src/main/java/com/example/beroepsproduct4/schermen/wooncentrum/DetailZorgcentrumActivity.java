@@ -14,6 +14,7 @@ import com.example.beroepsproduct4.MainActivity;
 import com.example.beroepsproduct4.R;
 import com.example.beroepsproduct4.database.DataDBHelper;
 import com.example.beroepsproduct4.model.Zorgcentrum;
+import com.example.beroepsproduct4.schermen.oudergegevens.OverzichtClientenactivity;
 
 import java.security.AccessController;
 
@@ -58,9 +59,19 @@ public class DetailZorgcentrumActivity extends AppCompatActivity {
             long result = dbHelper.deleteZorgcentrum(zorgcentrum1);
 
             if(result == 1){
-                Intent intent2 = new Intent(DetailZorgcentrumActivity.this, MainActivity.class);
-                startActivity(intent2);
+                Intent intent = new Intent(DetailZorgcentrumActivity.this, MainActivity.class);
+                startActivity(intent);
             }
+        });
+
+        btnBekijkClienten.setOnClickListener(v->{
+            Intent intent = new Intent(DetailZorgcentrumActivity.this, OverzichtClientenactivity.class);
+            intent.putExtra("zorgcentrum", zorgcentrum);
+            Log.e("",zorgcentrum.getAfdeling());
+            Log.e("",zorgcentrum.getZorgcentrum());
+
+            startActivity(intent);
+
         });
 
 

@@ -51,6 +51,10 @@ public class WooncentrumListFragment extends Fragment {
             } while (cur_beheerder.moveToNext());
             db.close();
         }
+        if(alZorgcentrums.isEmpty()){
+            Intent intent = new Intent(this.getContext(), ZorgcentrumToevoegenActivity.class);
+            startActivity(intent);
+        }
         ArrayAdapter<Zorgcentrum> zorgcentrumArrayAdapter = new ZorcentrumArrayAdapter(v.getContext(), R.layout.zorgcentrum_list_adapter, alZorgcentrums);
         lvZorgcentrum.setAdapter(zorgcentrumArrayAdapter);
         lvZorgcentrum.setOnItemClickListener(new AdapterView.OnItemClickListener() {

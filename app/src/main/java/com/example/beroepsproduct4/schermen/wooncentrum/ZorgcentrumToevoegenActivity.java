@@ -39,7 +39,6 @@ public class ZorgcentrumToevoegenActivity extends AppCompatActivity {
                 String afdeling = edttxtAfdeling.getText().toString();
                 String zorcentrum = edttxtZorgcenturm.getText().toString();
 
-
                 if(afdeling.isEmpty() || zorcentrum.isEmpty()){
 
                 } else{
