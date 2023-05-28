@@ -12,6 +12,12 @@
         android:theme="@style/Theme.Beroepsproduct4"
         tools:targetApi="31">
         <activity
+            android:name=".schermen.Rollatorhoortbij.RollatorhoortbijDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".schermen.Rollatorhoortbij.RollatorhoortbijToevoegActivity"
+            android:exported="false" />
+        <activity
             android:name=".schermen.oudergegevens.DetailOudergegevensActivity"
             android:exported="false" />
         <activity

@@ -84,6 +84,8 @@ public class Oudergegevens implements Parcelable {
         parcel.writeParcelable(zorgcentrum,i);
     }
 
-
-
+    @Override
+    public String toString() {
+        return bsn;
+    }
 }

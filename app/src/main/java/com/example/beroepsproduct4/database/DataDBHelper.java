@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 
 import com.example.beroepsproduct4.model.Oudergegevens;
+import com.example.beroepsproduct4.model.Rollatorhoortbij;
 import com.example.beroepsproduct4.model.Zorgcentrum;
 
 import java.util.ArrayList;
@@ -30,7 +31,25 @@ public class DataDBHelper extends SQLiteOpenHelper {
             RollatorDataContract.Ouderengegevens.Column_NAME_Afdeling + " text NOT NULL, " +
             RollatorDataContract.Ouderengegevens.Column_NAME_Zorgcentrum + " text NOT NULL," +
             "PRIMARY KEY (" + RollatorDataContract.Ouderengegevens.Column_Name_Bsn + "),"+
-            "FOREIGN KEY (" + RollatorDataContract.Ouderengegevens.Column_NAME_Afdeling  +","+ RollatorDataContract.Ouderengegevens.Column_NAME_Zorgcentrum + ") REFERENCES " + RollatorDataContract.Zorgcentrums.TABLE_NAME + " (" + RollatorDataContract.Zorgcentrums.Column_NAME_Afdeling +","+ RollatorDataContract.Zorgcentrums.COLUMN_NAME_Zorgcentrum+ "))";
+            "FOREIGN KEY (" + RollatorDataContract.Ouderengegevens.Column_NAME_Afdeling  +","+ RollatorDataContract.Ouderengegevens.Column_NAME_Zorgcentrum + ") REFERENCES " + RollatorDataContract.Zorgcentrums.TABLE_NAME + " (" + RollatorDataContract.Zorgcentrums.Column_NAME_Afdeling +","+ RollatorDataContract.Zorgcentrums.COLUMN_NAME_Zorgcentrum+ ")" +
+            " ON DELETE CASCADE "+" ON UPDATE CASCADE)";
+
+
+    private static final String SQL_CREATE_Rollatorhorenbij = "create table " + RollatorDataContract.Rollatorhorenbij.TABLE_NAME + "(" +
+            RollatorDataContract.Rollatorhorenbij.Column_Name_Bsn + " text NOT NULL, " +
+            RollatorDataContract.Rollatorhorenbij.Column_Name_Rollator + " text NOT NULL, " +
+            "PRIMARY KEY (" + RollatorDataContract.Rollatorhorenbij.Column_Name_Bsn + "),"+
+            " UNIQUE ("+ RollatorDataContract.Rollatorhorenbij.Column_Name_Rollator + "),"+
+            "FOREIGN KEY (" + RollatorDataContract.Rollatorhorenbij.Column_Name_Bsn + ") REFERENCES " + RollatorDataContract.Ouderengegevens.TABLE_NAME + " (" + RollatorDataContract.Ouderengegevens.Column_Name_Bsn +")" +
+            " ON DELETE CASCADE "+" ON UPDATE CASCADE)";
+
+    private static final String SQL_CREATE_Rollatorgegevens = "create table " + RollatorDataContract.Rollatorgegevens.TABLE_NAME + "(" +
+            RollatorDataContract.Rollatorgegevens.Column_Name_Rollator + " text NOT NULL, " +
+            RollatorDataContract.Rollatorgegevens.Column_Name_Date + " Date NOT NULL, " +
+            "PRIMARY KEY (" + RollatorDataContract.Rollatorgegevens.Column_Name_Rollator +"," + RollatorDataContract.Rollatorgegevens.Column_Name_Date +"),"+
+            "FOREIGN KEY (" + RollatorDataContract.Rollatorgegevens.Column_Name_Rollator + ") REFERENCES " + RollatorDataContract.Rollatorhorenbij.TABLE_NAME + " (" + RollatorDataContract.Rollatorhorenbij.Column_Name_Rollator + ")" +
+            " ON DELETE CASCADE "+" ON UPDATE CASCADE)";
+
 
     public DataDBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +63,10 @@ public class DataDBHelper extends SQLiteOpenHelper {
     public void onCreate(@NonNull SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_Zorgcentrum);
         db.execSQL(SQL_CREATE_Ouderengegevens);
+        db.execSQL(SQL_CREATE_Rollatorhorenbij);
+        db.execSQL(SQL_CREATE_Rollatorgegevens);
+
+
 
     }
 
@@ -161,6 +184,68 @@ public class DataDBHelper extends SQLiteOpenHelper {
         }
         return result;
 
+    }
+
+    public long insertRollatorhoortbij(Rollatorhoortbij test) {
+        long result = 0;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(RollatorDataContract.Rollatorhorenbij.Column_Name_Bsn, test.getOudergegevens().getBsn());
+            values.put(RollatorDataContract.Rollatorhorenbij.Column_Name_Rollator,test.getrollator());
+
+            result = db.insert(RollatorDataContract.Rollatorhorenbij.TABLE_NAME, null, values);
+            System.out.println(result);
+        }catch (SQLException sqlex) {
+            sqlex.getMessage();
+        }
+
+
+        return result;
+    }
+
+    public ArrayList<Oudergegevens> SpinnerOuderenbsn(String bsn) {
+        ArrayList<Oudergegevens> ouderenbsn = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur_ouderenbsn = db.rawQuery("select bsn from ouderengegevens where bsn=?", new String[]{bsn});
+        if (cur_ouderenbsn.moveToFirst()) {
+            do{
+                Oudergegevens oudergegevens = new Oudergegevens();
+                oudergegevens.setBsn(cur_ouderenbsn.getString(0));
+                ouderenbsn.add(oudergegevens);
+            } while (cur_ouderenbsn.moveToNext());
+        }
+        return ouderenbsn;
+    }
+
+    public long updateRollatorhoortbij(String oldStringRollator, Rollatorhoortbij rollator) {
+        long result = 0;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(RollatorDataContract.Rollatorhorenbij.Column_Name_Bsn,rollator.getOudergegevens().getBsn());
+            values.put(RollatorDataContract.Rollatorhorenbij.Column_Name_Rollator,rollator.getrollator());
+            result = db.update(RollatorDataContract.Rollatorhorenbij.TABLE_NAME,values,"rollator=?",new String[]{oldStringRollator});
+        }catch (SQLException se){
+            se.getMessage();
+        }
+        return result;
+
+
+
+    }
+
+    public long deleteRollatorhoortbij(Rollatorhoortbij rollatorhoortbij) {
+        long result = 0;
+        try {
+            String strBsn = rollatorhoortbij.getOudergegevens().getBsn();
+            SQLiteDatabase db = this.getReadableDatabase();
+            result = db.delete(RollatorDataContract.Rollatorhorenbij.TABLE_NAME,"bsn=?", new String[]{strBsn});
+
+        }catch (SQLException se){
+            se.getMessage();
+        }
+        return result;
     }
 }
 

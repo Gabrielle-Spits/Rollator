@@ -13,6 +13,7 @@ import com.example.beroepsproduct4.R;
 import com.example.beroepsproduct4.database.DataDBHelper;
 import com.example.beroepsproduct4.model.Oudergegevens;
 import com.example.beroepsproduct4.model.Zorgcentrum;
+import com.example.beroepsproduct4.schermen.Rollatorhoortbij.RollatorhoortbijDetailActivity;
 import com.example.beroepsproduct4.schermen.wooncentrum.DetailZorgcentrumActivity;
 import com.example.beroepsproduct4.schermen.wooncentrum.ZorgcentrumToevoegenActivity;
 
@@ -37,7 +38,7 @@ public class DetailOudergegevensActivity extends AppCompatActivity {
 //       buttons xml bestand ophalen
         Button btnBewerkOudergegevens = findViewById(R.id.btnBewerkOudergegevens);
         Button btnVerwijderOudergegevens = findViewById(R.id.btnVerwijderOudergegevens);
-
+        Button btnBekijkRollator = findViewById(R.id.btnBekijkrollator);
         txtvwBsnGevuld.setText(oudergegevens.getBsn());
         txtvwOudernaamGevuld.setText(oudergegevens.getOudernaam());
         txtvwAfdelingGevuld.setText(oudergegevens.getZorgcentrum().getAfdeling());
@@ -68,6 +69,14 @@ public class DetailOudergegevensActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(DetailOudergegevensActivity.this, MainActivity.class);
                 startActivity(intent2);
             }
+        });
+
+        btnBekijkRollator.setOnClickListener(v->{
+            String StrBSN = txtvwBsnGevuld.getText().toString();
+            Oudergegevens ouderengegevensrollator = new Oudergegevens(StrBSN);
+            Intent intent1 = new Intent(DetailOudergegevensActivity.this, RollatorhoortbijDetailActivity.class);
+            intent1.putExtra("oudergegevensupdate", ouderengegevensrollator);
+            startActivity(intent1);
         });
 
     }

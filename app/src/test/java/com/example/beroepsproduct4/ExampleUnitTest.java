@@ -35,10 +35,11 @@ public class ExampleUnitTest {
 
     @Test
     public void Rollatorhoortbij_oudergegevens(){
-        Oudergegevens o = new Oudergegevens("bsn");
+        Oudergegevens o = new Oudergegevens();
+        o.setBsn("bsn");
         Rollatorhoortbij r = new Rollatorhoortbij();
         r.setOudergegevens(o);
-        assertEquals(o,r.getOudergegevens());
+       assertEquals(o,r.getOudergegevens().getBsn());
 
     }
 

@@ -67,15 +67,7 @@ public class DetailZorgcentrumActivity extends AppCompatActivity {
         btnBekijkClienten.setOnClickListener(v->{
             Intent intent = new Intent(DetailZorgcentrumActivity.this, OverzichtClientenactivity.class);
             intent.putExtra("zorgcentrum", zorgcentrum);
-            Log.e("",zorgcentrum.getAfdeling());
-            Log.e("",zorgcentrum.getZorgcentrum());
-
             startActivity(intent);
-
         });
-
-
-
-
     }
 }

@@ -103,7 +103,10 @@ public class OudertoevoegenActivity extends AppCompatActivity {
             ArrayAdapter<Zorgcentrum> zorgcentrumArrayAdapter = new ArrayAdapter<>(OudertoevoegenActivity.this, android.R.layout.simple_spinner_item, alZorgcentrums);
             zorgcentrumArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(zorgcentrumArrayAdapter);
-            selectSpinnerValue(spinner, zorgcentrum.toString());
+            if(zorgcentrum!= null){
+                selectSpinnerValue(spinner, zorgcentrum.toString());
+            }
+
 
         }
 
